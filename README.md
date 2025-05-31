@@ -29,7 +29,7 @@ pip install markdown2
 
 ### 运行程序
 ```bash
-python main.py
+python Qnotex.py
 ```
 
 ## 使用说明
