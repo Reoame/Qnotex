@@ -167,6 +167,7 @@
   ('concurrent.futures.thread',
    'C:\\Users\\VINKO\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\concurrent\\futures\\thread.py',
    'PYMODULE'),
+  ('config', 'C:\\Users\\VINKO\\Desktop\\Qmdtime\\config.py', 'PYMODULE'),
   ('contextlib',
    'C:\\Users\\VINKO\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\contextlib.py',
    'PYMODULE'),

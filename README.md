@@ -71,6 +71,9 @@ Qnote/
 └── icon.ico         # 应用程序图标（可选）
 ```
 
+### 更新日志
+[点击这里查看](update_log.md)
+
 ### 贡献
 欢迎通过 GitHub 提交问题和贡献代码：
 [https://github.com/Reoame/Qnotex](https://github.com/Reoame/Qnotex)

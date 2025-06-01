@@ -1,0 +1,9 @@
+≥Ã–Ú±¿¿£: 'MarkdownEditor' object has no attribute 'on_closing'
+Traceback (most recent call last):
+  File "C:\Users\VINKO\Desktop\Qmdtime\Qnotex.py", line 672, in <module>
+    app = MarkdownEditor(root)
+          ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\VINKO\Desktop\Qmdtime\Qnotex.py", line 48, in __init__
+    self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
+                                           ^^^^^^^^^^^^^^^
+AttributeError: 'MarkdownEditor' object has no attribute 'on_closing'

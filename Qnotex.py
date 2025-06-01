@@ -7,15 +7,21 @@ import time
 import re
 import sys
 import tempfile
+import config
 
 
+
+        
 class MarkdownEditor:
+    def get_resoure_path(self,relative_path): 
+        if hasattr(sys, '_MEIPASS'):
+            return os.path.join(sys._MEIPASS,relative_path).replace("\\", "/")
+        return os.path.join(os.path.abspath("."), relative_path).replace("\\", "/")
     def __init__(self, root):
         self.root = root
         self.root.geometry("1200x700")
-        self.root.title("Qnote")
+        self.root.title("Qnotex")
 
-        # 尝试设置应用图标
         try:
             if getattr(sys, 'frozen', False):
                 # 打包后的可执行文件所在的目录
@@ -23,7 +29,7 @@ class MarkdownEditor:
             else:
                 base_path = os.path.dirname(os.path.abspath(__file__))
 
-            icon_path = os.path.join(base_path, "icon.ico")
+            icon_path = os.path.join(base_path, self.get_resoure_path("icon.ico"))
             self.root.iconbitmap(icon_path)
         except Exception as e:
             print(f"无法加载图标: {e}")
@@ -60,7 +66,8 @@ class MarkdownEditor:
 
     def open_url_github(self):
         webbrowser.open("https://github.com/Reoame/Qnotex")
-
+    def open_url_feedback(self):
+        webbrowser.open("https://github.com/Reoame/Qnotex/issues")
     def on_closing(self):
         """处理窗口关闭事件"""
         # 取消所有动画
@@ -81,6 +88,7 @@ class MarkdownEditor:
 
             # 关闭窗口
             self.root.destroy()
+
 
     def create_menu(self):
         menubar = tk.Menu(self.root, bg="#f0f2f5", fg="#333", relief=tk.FLAT)
@@ -132,12 +140,14 @@ class MarkdownEditor:
         view_menu = tk.Menu(menubar, tearoff=0, bg="#fff", fg="#333", bd=1, activebackground="#e6f7ff")
         view_menu.add_command(label="预览Markdown", command=self.preview_markdown)
         view_menu.add_command(label="刷新预览", command=self.refresh_preview)
+    
         menubar.add_cascade(label="视图", menu=view_menu)
 
         # 帮助菜单
         help_menu = tk.Menu(menubar, tearoff=0, bg="#fff", fg="#333", bd=1, activebackground="#e6f7ff")
         help_menu.add_command(label="Markdown语法", command=self.open_url_help)
         help_menu.add_command(label="Github", command=self.open_url_github)
+        help_menu.add_command(label="反馈", command=self.open_url_feedback)
         menubar.add_cascade(label="帮助", menu=help_menu)
 
         self.root.config(menu=menubar)
@@ -426,64 +436,15 @@ class MarkdownEditor:
                 messagebox.showerror("错误", f"导出HTML失败:\n{str(e)}")
 
     def convert_to_html(self, markdown_text):
-        # 转换Markdown为HTML
         html = markdown2.markdown(markdown_text)
-
+        
         # 添加基本的HTML结构
         return f"""<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Markdown导出</title>
-    <style>
-        body {{ 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-            line-height: 1.6; 
-            max-width: 800px; 
-            margin: 0 auto; 
-            padding: 20px;
-            color: #2c3e50;
-            background-color: #f9f9f9;
-        }}
-        h1, h2, h3, h4, h5, h6 {{ 
-            color: #2c3e50; 
-            margin-top: 1.5em;
-            margin-bottom: 0.5em;
-        }}
-        h1 {{ border-bottom: 2px solid #3498db; padding-bottom: 10px; }}
-        h2 {{ border-bottom: 1px solid #3498db; padding-bottom: 8px; }}
-        p {{ margin: 0 0 1em; }}
-        a {{ color: #3498db; text-decoration: none; }}
-        a:hover {{ text-decoration: underline; }}
-        code {{ 
-            background-color: #f0f4f8; 
-            padding: 2px 6px; 
-            border-radius: 4px; 
-            font-family: Consolas, Monaco, 'Andale Mono', monospace;
-        }}
-        pre {{ 
-            background-color: #f0f4f8; 
-            padding: 15px; 
-            border-radius: 6px; 
-            overflow: auto;
-            line-height: 1.4;
-            border-left: 4px solid #3498db;
-        }}
-        pre code {{ background-color: transparent; padding: 0; }}
-        blockquote {{ 
-            border-left: 4px solid #3498db; 
-            padding-left: 15px; 
-            color: #555; 
-            margin-left: 0;
-            background-color: #f9f9f9;
-        }}
-        img {{ max-width: 100%; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }}
-        hr {{ border: 0; height: 1px; background: linear-gradient(to right, transparent, #3498db, transparent); margin: 2em 0; }}
-        table {{ border-collapse: collapse; width: 100%; margin-bottom: 1em; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }}
-        th, td {{ border: 1px solid #ddd; padding: 10px; text-align: left; }}
-        th {{ background-color: #3498db; color: white; }}
-        tr:nth-child(even) {{ background-color: #f2f9ff; }}
-    </style>
+    <title>QnotexBuild</title>
+    <link rel="stylesheet" href={config.url}>
 </head>
 <body>
 {html}
@@ -666,4 +627,4 @@ if __name__ == "__main__":
             traceback.print_exc(file=f)
 
         # 显示错误消息
-        messagebox.showerror("程序错误", f"程序发生错误: {str(e)}\n详细信息已保存到error.log文件")
+        messagebox.showerror("程序错误", f"程序发生错误: {str(e)}\n详细信息已保存到error.log文件")  
